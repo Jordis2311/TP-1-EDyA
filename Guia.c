@@ -8,9 +8,14 @@
 
 3- Volver cada letra un Nodo de un ABB en donde y guardarlos en un struct del tipo
 
+Btree{
+    int indice;
+    Btree izq,der;
+}
+
 Hojas{
     BTree Arbol
-    int peso, indice
+    int peso
 }
 En donde peso es cada aparicion de la letra
 
