@@ -164,9 +164,16 @@ BSTree combinar_lista(SList lista){
 //codigos_arbol(BSTree,Char[],Int,Char**)
 //Recorre el arbol hasta llegar a sus hojas guardando en buffer el camino que se toma para cada hoja en un formato string, utilizando altura para ver en que posicion
 //tiene que modificar a este buffer
-void codigos_arbol(BSTree arbol,char buffer[20],int altura,char **codigos){
+//Ademas mientras recorre el arbol, guarda la estructura de este en un char* utilizando un puntero a int para ver en que posicion tiene que estar
+//Y guarda en otro char* el orden de aparicion de los caracteres
+void codigos_arbol(BSTree arbol,char buffer[20],int altura,char **codigos,char* est_arb,int *pos_est,char *orden_letras,int*pos_let){
   if(arbol != NULL){
     if(es_hoja(arbol)){
+      est_arb[*pos_est] = '0';
+      *pos_est = *pos_est + 1;
+      orden_letras[*pos_let] = (char) (arbol->letra  + 65); //el 65 esta para tener caracteres comprensibles, estos serian desde la A (65) a la J (74)
+      *pos_let = *pos_let + 1;
+
       buffer[altura] = '\0';
       codigos[arbol->letra] = malloc(sizeof(char)*(strlen(buffer) + 1));
       strcpy(codigos[arbol->letra],buffer);
@@ -174,14 +181,16 @@ void codigos_arbol(BSTree arbol,char buffer[20],int altura,char **codigos){
       puts("");
     }
     else{
+      est_arb[*pos_est] = '1';
+      *pos_est = *pos_est + 1;
       int siguiente = altura + 1;
       buffer[altura] = '0';
       printf("Rama Izquierda\n");
       buffer[siguiente] = '\0';
-      codigos_arbol(arbol->izq,buffer,siguiente,codigos);
+      codigos_arbol(arbol->izq,buffer,siguiente,codigos,est_arb,pos_est,orden_letras,pos_let);
       buffer[altura]= '1';
       printf("Rama Derecha\n");
-      codigos_arbol(arbol->der,buffer,siguiente,codigos);
+      codigos_arbol(arbol->der,buffer,siguiente,codigos,est_arb,pos_est,orden_letras,pos_let);
     }
   }
 }
@@ -219,10 +228,20 @@ int main(){
   
   char buffer[20];
   char **codigos = malloc(sizeof(char*)*10);
-  codigos_arbol(arbol_huffman,buffer,0,codigos);
+
+  char *estructura_arbol =malloc(sizeof(char)*19);
+  char *orden_letras = malloc(sizeof(char)*10);
+  int pos_est = 0,pos_letra = 0;
+
+  codigos_arbol(arbol_huffman,buffer,0,codigos,estructura_arbol,&pos_est,orden_letras,&pos_letra);
 
   for(int i=0;i<10;i++) printf("%i: %s / ",i,codigos[i]);
   puts("");
+
+  estructura_arbol[pos_est] = '\0';
+  printf("%s\n",estructura_arbol);
+  orden_letras[pos_letra] = '\0';
+  printf("%s\n",orden_letras);
 
   return 0;
 }
