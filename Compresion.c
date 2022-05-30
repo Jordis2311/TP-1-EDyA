@@ -44,7 +44,6 @@ int comparar_pesos(ArPeso a,ArPeso b){
   else return -1;
 }
 
-
 //insert_sort(SList,ArPeso) -> SList
 //Inserta de manera ordenada en la lista el dato ArPeso segun su peso
 SList insert_sort(SList lista, ArPeso dato) {
@@ -70,15 +69,6 @@ SList insert_sort(SList lista, ArPeso dato) {
     }
     nodo->sig = nuevoNodo;
     return lista;
-  }
-}
-
-void slist_destruir(SList lista) {
-  SNodo *nodoAEliminar;
-  while (lista != NULL) {
-    nodoAEliminar = lista;
-    lista = lista->sig;
-    free(nodoAEliminar);
   }
 }
 
@@ -159,7 +149,9 @@ BSTree combinar_lista(SList lista){
     free(eliminador);
     lista = insert_sort(lista,combinacion);
   }
-  return lista->dato.arbol;
+  BSTree arbol_final = lista->dato.arbol;
+  free(lista);
+  return arbol_final;
 }
 
 //codigos_arbol(BSTree,Char[],Int,Char**)
@@ -167,7 +159,7 @@ BSTree combinar_lista(SList lista){
 //tiene que modificar a este buffer
 //Ademas mientras recorre el arbol, guarda la estructura de este en un char* utilizando un puntero a int para ver en que posicion tiene que estar
 //Y guarda en otro char* el orden de aparicion de los caracteres
-void codigos_arbol(BSTree arbol,char buffer[20],int altura,char **codigos,char* est_arb,int *pos_est,char *orden_letras,int*pos_let){
+void codigos_arbol(BSTree arbol,char buffer[],int altura,char **codigos,char* est_arb,int *pos_est,char *orden_letras,int*pos_let){
   if(arbol != NULL){
     if(es_hoja(arbol)){
       est_arb[*pos_est] = '0';
@@ -234,31 +226,45 @@ int * arreglo_con_peso() {
 }
 
 char* concatenar(char *cad1,char *cad2){
-  if(strcmp(cad1,"") == 0){
-    return cad2;
+  int len1 = strlen(cad1), len2 = strlen(cad2), i,b;
+  char *conc = malloc(sizeof(char)*(len1 + len2 + 2));
+  for(i = 0; i<len1;i++){
+    conc[i] = cad1[i];
   }
-  else
-  {
-    int len1 =strlen(cad1), len2 = strlen(cad2), i,b;
-    char *conc = malloc(sizeof(char)*(len1 + len2 + 1));
-    for(i = 0; i<len1;i++){
-      conc[i] = cad1[i];
-    }
-    for(b = 0;b<len2;b++){
-      conc[i+b] = cad2[b];
-    }
-    conc[i+b] = '\0';
-    return conc;
+  for(b = 0;b<len2;b++){
+    conc[i+b] = cad2[b];
   }
+  conc[i+b] = '\0';
+  return conc;
 }
 
 char *traducir(char* texto,int len,char** codigos_arbol){
-  char* traduccion = "";
+  char* traduccion = malloc(1);
+  *traduccion = 0;
+
   for(int i = 0;i<len;i++){
     unsigned char c = texto[i];
+    char* anterior = traduccion;
     traduccion = concatenar(traduccion,codigos_arbol[c]);
+    free(anterior);
   }
   return traduccion;
+}
+
+void liberar_arbol(BSTree arbol){
+  if(arbol != NULL){
+    liberar_arbol(arbol->izq);
+    liberar_arbol(arbol->der);
+    free(arbol);
+  }
+}
+
+char* unir_arb_let(char* arbol,char* ord){
+  char* unido = malloc(sizeof(char)*(767));
+  int i,b;
+  for(i = 0;i<511;i++) unido[i] = arbol[i];
+  for(b=0;b<256;b++) unido[i+b] = ord[b];
+  return unido;
 }
 
 int main(){
@@ -283,7 +289,7 @@ int main(){
   char **codigos = malloc(sizeof(char*)*256);
 
   char *estructura_arbol =malloc(sizeof(char)*512);
-  char *orden_letras = malloc(sizeof(char)*256);
+  char *orden_letras = malloc(sizeof(char)*257);
   int pos_est = 0,pos_letra = 0;
 
   codigos_arbol(arbol_huffman,buffer_codigos,0,codigos,estructura_arbol,&pos_est,orden_letras,&pos_letra);
@@ -297,10 +303,9 @@ int main(){
   orden_letras[pos_letra] = '\0';
   //printf("Orden Letras \n%s\n",orden_letras);
 
-  char *traduccion = traducir(buff,len,codigos);
+  char *tree = unir_arb_let(estructura_arbol,orden_letras);
 
-  char *tree = concatenar(estructura_arbol,orden_letras);
-  //printf("Arbol\n %s\n",tree);
+  char *traduccion = traducir(buff,len,codigos);
 
   //printf("Traduccion\n%s\n",traduccion);
 
@@ -308,8 +313,19 @@ int main(){
   char *huffman = implode(traduccion,strlen(traduccion),&hlen);
   //printf("Traduccion Final\n%s\n",huffman);
 
-  writefile("hf.txt",huffman,strlen(huffman));
-  writefile("tree.txt",tree,strlen(tree));
+  writefile("hf.txt",huffman,hlen);
+  writefile("tree.txt",tree,767);
+
+  free(tree);
+  free(huffman);
+  free(traduccion);
+  for(int i=0;i<256;i++) free(codigos[i]);
+  free(codigos);
+  free(orden_letras);
+  free(estructura_arbol);
+  liberar_arbol(arbol_huffman);
+  free(pesos);
+  free(buff);
 
   printf("Termino\n");
   return 0;
