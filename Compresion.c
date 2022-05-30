@@ -162,7 +162,7 @@ BSTree combinar_lista(SList lista){
 void codigos_arbol(BSTree arbol,char buffer[],int altura,char **codigos,char* est_arb,int *pos_est,char *orden_letras,int*pos_let){
   if(arbol != NULL){
     if(es_hoja(arbol)){
-      est_arb[*pos_est] = '0';
+      est_arb[*pos_est] = '1';
       *pos_est = *pos_est + 1;
       orden_letras[*pos_let] = (unsigned char) (arbol->letra);
       *pos_let = *pos_let + 1;
@@ -174,7 +174,7 @@ void codigos_arbol(BSTree arbol,char buffer[],int altura,char **codigos,char* es
       //puts("");
     }
     else{
-      est_arb[*pos_est] = '1';
+      est_arb[*pos_est] = '0';
       *pos_est = *pos_est + 1;
       int siguiente = altura + 1;
       buffer[altura] = '0';
