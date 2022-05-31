@@ -37,6 +37,11 @@ void codigos_arbol(BSTree arbol, char buffer[], int altura, char **codigos,
                    int* pos_let);
 
 /**
+ * 
+ */
+BSTree texto_a_arbol(char *arbol_txt,int *pos_arb,int*pos_let);
+
+/**
  * Libera la memoria pedida por un árbol.
  */
 void liberar_arbol(BSTree arbol);

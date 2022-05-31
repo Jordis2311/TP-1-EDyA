@@ -70,6 +70,28 @@ void codigos_arbol(BSTree arbol, char buffer[], int altura, char **codigos,
   }
 }
 
+BSTree texto_a_arbol(char *arbol_txt,int *pos_arb,int*pos_let){
+  if(arbol_txt[*pos_arb] == '1'){
+    struct _BST_Nodo *hoja = malloc(sizeof(struct _BST_Nodo));
+    hoja->izq = NULL;
+    hoja->der = NULL;
+
+    hoja->letra = (unsigned char) arbol_txt[*pos_let];
+    *pos_arb = *pos_arb + 1;
+    *pos_let = *pos_let + 1;
+    return hoja;
+  }
+  else if(arbol_txt[*pos_arb] == '0'){
+    struct _BST_Nodo *rama = malloc(sizeof(struct _BST_Nodo));
+    *pos_arb = *pos_arb + 1;
+    rama->izq = texto_a_arbol(arbol_txt,pos_arb,pos_let);
+    rama->der = texto_a_arbol(arbol_txt,pos_arb,pos_let);
+
+    return rama;
+  }
+  else return NULL;
+}
+
 /**
  * Libera la memoria pedida por un árbol.
  */

@@ -37,29 +37,20 @@ int * arreglo_con_peso() {
   return arreglo;
 }
 
-char* concatenar(char *cad1,char *cad2){
-  int len1 = strlen(cad1), len2 = strlen(cad2), i,b;
-  char *conc = malloc(sizeof(char)*(len1 + len2 + 2));
-  for(i = 0; i<len1;i++){
-    conc[i] = cad1[i];
-  }
-  for(b = 0;b<len2;b++){
-    conc[i+b] = cad2[b];
-  }
-  conc[i+b] = '\0';
-  return conc;
-}
-
-char *traducir(char* texto,int len,char** codigos_arbol){
-  char* traduccion = malloc(1);
-  *traduccion = 0;
+char *traducir(char* texto,int len,char** codigos,int longitud){
+  char* traduccion = malloc(sizeof(char)*(longitud+1));
+  int posicion=0,digitos = 0;
 
   for(int i = 0;i<len;i++){
     unsigned char c = texto[i];
-    char* anterior = traduccion;
-    traduccion = concatenar(traduccion,codigos_arbol[c]);
-    free(anterior);
+    while(codigos[c][digitos] != '\0'){
+      traduccion[posicion] = codigos[c][digitos];
+      posicion++;
+      digitos++;
+    }
+    digitos = 0;
   }
+  traduccion[posicion] = '\0';
   return traduccion;
 }
 
@@ -72,8 +63,16 @@ char* unir_arb_let(char* arbol,char* ord){
   return unido;
 }
 
+int longitud_Archivo_final(int* pesos,char **codigos){
+  int longitud = 0;
+  for(int i = 0;i< 256; i++){
+    longitud = longitud + pesos[i]*(strlen(codigos[i]));
+  }
+  return longitud;
+}
+
 int main(){
-  const char* path = "prueba.txt";
+  const char* path = "prueba 2.txt";
   int len;
   char* buff = readfile(path,&len);
 
@@ -87,7 +86,7 @@ int main(){
   //puts("");
 
   BSTree arbol_huffman = combinar_lista(lista_arb);
-  //recorrer_arbol_huffman(arbol_huffman);
+  recorrer_arbol_huffman(arbol_huffman);
   //puts("\n");
 
   char buffer_codigos[30];
@@ -110,16 +109,17 @@ int main(){
 
   char *tree = unir_arb_let(estructura_arbol,orden_letras);
 
-  char *traduccion = traducir(buff,len,codigos);
+  int longitud = longitud_Archivo_final(pesos,codigos);
+
+  char *traduccion = traducir(buff,len,codigos,longitud);
 
   //printf("Traduccion\n%s\n",traduccion);
 
   int hlen;
   char *huffman = implode(traduccion,strlen(traduccion),&hlen);
-  //printf("Traduccion Final\n%s\n",huffman);
 
-  writefile("hf.txt",huffman,hlen);
-  writefile("tree.txt",tree,767);
+  writefile("prueba.txt.hf",huffman,hlen);
+  writefile("prueba.txt.tree",tree,767);
 
   free(tree);
   free(huffman);
