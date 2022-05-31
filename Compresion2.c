@@ -18,7 +18,6 @@ int * peso_arreglo_caracteres(int *arreglo, char *buff, int len) {
   char c;
   for (int i = 0; i < len; i++) {
     c = buff[i];
-    //unsigned char cc = c;
     arreglo[(unsigned char)c] += 1;
   }
   return arreglo;
@@ -81,13 +80,10 @@ int main(){
 
   SList lista_arb = array_a_lista(pesos);
 
-  //slist_recorrer(lista_arb);
   test_hojas_en_lista(lista_arb);
-  //puts("");
 
   BSTree arbol_huffman = combinar_lista(lista_arb);
   recorrer_arbol_huffman(arbol_huffman);
-  //puts("\n");
 
   char buffer_codigos[30];
   char **codigos = malloc(sizeof(char*)*256);
@@ -98,22 +94,15 @@ int main(){
 
   codigos_arbol(arbol_huffman,buffer_codigos,0,codigos,estructura_arbol,&pos_est,orden_letras,&pos_letra);
 
-  //for(int i=0;i<256;i++) printf("%c: %s / ",(unsigned char) i,codigos[i]);
-  puts("");
-
   estructura_arbol[pos_est] = '\0';
-  //printf("Estructura Arbol \n%s\n",estructura_arbol);
-  puts("");
+
   orden_letras[pos_letra] = '\0';
-  //printf("Orden Letras \n%s\n",orden_letras);
 
   char *tree = unir_arb_let(estructura_arbol,orden_letras);
 
   int longitud = longitud_Archivo_final(pesos,codigos);
 
   char *traduccion = traducir(buff,len,codigos,longitud);
-
-  //printf("Traduccion\n%s\n",traduccion);
 
   int hlen;
   char *huffman = implode(traduccion,strlen(traduccion),&hlen);
