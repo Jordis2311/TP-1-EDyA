@@ -1,9 +1,6 @@
 #ifndef __ARBOLES_H__
 #define __ARBOLES_H__
 
-#include "arpeso.h"
-#include "listas.h"
-
 struct _BST_Nodo {
   int letra;
   struct _BST_Nodo *izq, *der;
@@ -25,14 +22,6 @@ int es_hoja(BSTree arbol);
  * 
  */
 void recorrer_arbol_huffman(BSTree arbol);
-
-/**
- * combinar_lista(SList) -> BSTree
- * Toma la lista enlazada de ArPeso y combina todos los Arboles y Pesos de las 
- * estructuras segun su Peso y los vuelve a insertar en la lista.
- * Cuando solo queda un elemento en dicha lista se retorna el arbol de huffman.
- */
-BSTree combinar_lista(SList lista);
 
 /**
  * codigos_arbol(BSTree,Char[],Int,Char**)

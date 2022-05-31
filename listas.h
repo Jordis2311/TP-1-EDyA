@@ -38,6 +38,15 @@ SList array_a_lista(int* array);
 void slist_recorrer(SList lista);
 
 /**
+ * combinar_lista(SList) -> BSTree
+ * Toma la lista enlazada de ArPeso y combina todos los Arboles y Pesos de las 
+ * estructuras segun su Peso y los vuelve a insertar en la lista.
+ * Cuando solo queda un elemento en dicha lista se retorna el arbol de huffman.
+ */
+
+BSTree combinar_lista(SList lista);
+
+/**
  * Verifica que se creo bien la lista desde el array.
  */
 void test_hojas_en_lista(SList lista);

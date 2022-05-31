@@ -72,6 +72,27 @@ void slist_recorrer(SList lista) {
   puts("");
 }
 
+BSTree combinar_lista(SList lista){
+  SNodo *eliminador;
+  while(lista->sig != NULL){
+    //Combina los ArPeso colocando el arbol del ArPeso con mayor peso a la 
+    //izquierda
+    ArPeso combinacion = combinar_AP(lista->sig->dato,lista->dato);  
+    //Al estar la lista ordenada de menor a mayor, nodo->sig tendra un peso 
+    //mayor o igual
+    eliminador = lista;
+    lista = lista->sig;
+    free(eliminador); //Eliminamos los 2 nodos utilizados
+    eliminador = lista;
+    lista = lista->sig;
+    free(eliminador);
+    lista = insert_sort(lista,combinacion);
+  }
+  BSTree arbol_final = lista->dato.arbol;
+  free(lista);
+  return arbol_final;
+}
+
 /**ass
  * Verifica que se creo bien la lista desde el array.
  */

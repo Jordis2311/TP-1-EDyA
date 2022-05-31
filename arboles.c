@@ -37,42 +37,7 @@ void recorrer_arbol_huffman(BSTree arbol){
   }
 }
 
-/**
- * combinar_lista(SList) -> BSTree
- * Toma la lista enlazada de ArPeso y combina todos los Arboles y Pesos de las 
- * estructuras segun su Peso y los vuelve a insertar en la lista.
- * Cuando solo queda un elemento en dicha lista se retorna el arbol de huffman.
- */
-BSTree combinar_lista(SList lista){
-  SNodo *eliminador;
-  while(lista->sig != NULL){
-    //Combina los ArPeso colocando el arbol del ArPeso con mayor peso a la 
-    //izquierda
-    ArPeso combinacion = combinar_AP(lista->sig->dato,lista->dato);  
-    //Al estar la lista ordenada de menor a mayor, nodo->sig tendra un peso 
-    //mayor o igual
-    eliminador = lista;
-    lista = lista->sig;
-    free(eliminador); //Eliminamos los 2 nodos utilizados
-    eliminador = lista;
-    lista = lista->sig;
-    free(eliminador);
-    lista = insert_sort(lista,combinacion);
-  }
-  BSTree arbol_final = lista->dato.arbol;
-  free(lista);
-  return arbol_final;
-}
 
-/**
- * codigos_arbol(BSTree,Char[],Int,Char**)
- * Recorre el arbol hasta llegar a sus hojas guardando en buffer el camino que 
- * se toma para cada hoja en un formato string, utilizando altura para ver en 
- * que posicion tiene que modificar a este buffer.
- * Ademas mientras recorre el arbol, guarda la estructura de este en un char* 
- * utilizando un puntero a int para ver en que posicion tiene que estar y guarda
- * en otro char* el orden de aparicion de los caracteres.
- */
 void codigos_arbol(BSTree arbol, char buffer[], int altura, char **codigos,
                    char* est_arb, int *pos_est, char *orden_letras,
                    int* pos_let){
