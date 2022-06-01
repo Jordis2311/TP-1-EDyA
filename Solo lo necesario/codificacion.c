@@ -69,7 +69,7 @@ int longitud_Archivo_final(int* pesos,char **codigos,int len){
 
 char *decodificar(char* bits,int blen, BSTree arbol,int* tlen){
   *tlen = 0;
-  char* original = malloc(sizeof(char)*100000);
+  char* original = malloc(sizeof(char)*blen);
   BSTree temp = arbol;
   for(int i = 0; i< blen; i++){
     if(bits[i] == '0')
