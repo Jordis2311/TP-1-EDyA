@@ -50,10 +50,7 @@ SList insert_sort(SList lista, ArPeso dato) {
 SList array_a_lista(int* array){
   SList lista = slist_crear();
 
-  for(int i=0;i<256;i++){ //la lista tiene una longitud predeterminada pues cada
-	// indice representa un caracter (0-255) y lo que contiene ese indice es el 
-	// peso de dicho caracter
-    // Solo 10 para testeo
+  for(int i=0;i<256;i++){ 
     ArPeso dato = dato_a_AP(i,array[i]);
     lista = insert_sort(lista,dato);
   }

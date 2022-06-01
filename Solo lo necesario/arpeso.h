@@ -10,7 +10,8 @@
  * que tiene cada hoja y subarbol para construir finalmente el arbol de huffman
  * en donde:
  * BSTree arbol: es un puntero al arbol que contiene
- * int peso: es el peso de dicho arbol, es decir la cantidad de apariciones en el archivo que tienen los caracteres de las hojas del arbol
+ * int peso: es el peso de dicho arbol, es decir la cantidad de 
+ * apariciones en el archivo que tienen los caracteres de las hojas del arbol
  */
 typedef struct _ArPeso{
   BSTree arbol;
@@ -18,8 +19,10 @@ typedef struct _ArPeso{
 } ArPeso;
 
 /**dato_a_AP(int ,int) -> Arpeso
- * Toma un int que representa al ASCII de un caracter y las repeticiones de dicho caracter
- * y devuelve un ArPeso que apunta a una hoja con ese caracter y cuyo peso es las repeticiones de dicho caracter
+ * Toma un int que representa al ASCII de un caracter y 
+ * las repeticiones de dicho caracter y devuelve un 
+ * ArPeso que apunta a una hoja con ese caracter y 
+ * cuyo peso es las repeticiones de dicho caracter
  */
 ArPeso dato_a_AP(int indice, int peso);
 

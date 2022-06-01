@@ -33,7 +33,9 @@ SList insert_sort(SList lista, ArPeso dato);
 SList array_a_lista(int* array);
 
 /**
- * 
+ * slist_recorrer(SList)
+ * Recorre la lista enlazada de arpeso mostrando, 
+ * el peso de sus nodos y los caracteres que contenienen
  */
 void slist_recorrer(SList lista);
 

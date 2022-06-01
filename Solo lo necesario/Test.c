@@ -32,9 +32,54 @@ void test_es_hoja(){
   liberar_arbol(hoja);
 }
 
+// void test_codigos_arbol()
+
+// void test_texto_a_arbol()
+
 //----------------------------------------------
 //Test de funciones de arpeso.h
 
+void test_dato_a_arpeso(){
+  ArPeso ap = dato_a_AP(2,5);
+  assert((ap.arbol) != NULL);
+  assert((ap.arbol->letra) == 2);
+  free(ap.arbol);
+}
+
+void test_comparar_pesos(){
+  ArPeso a = dato_a_AP(2,5);
+  ArPeso b = dato_a_AP(2,6);
+
+  assert(comparar_pesos(a,b) == -1);
+  assert(comparar_pesos(b,a) == 1);
+
+  free(a.arbol);
+  free(b.arbol);
+}
+
+void test_combinar_AP(){
+  ArPeso a = dato_a_AP(2,5);
+  ArPeso b = dato_a_AP(3,6);
+
+  ArPeso c = combinar_AP(a,b);
+  assert(c.peso == 11);
+  assert(c.arbol->izq->letra == 2);
+  assert(c.arbol->der->letra == 3);
+  liberar_arbol(c.arbol);
+}
+
+//----------------------------------------------
+//Test de funciones de listas.h
+
+void test_lista_crear(){
+  assert(lista_crear()==NULL);
+}
+
+//void test_array_a_lista()
+
+//void test_combinar_lista()
+
+//void test_insert_sort();
 
 //----------------------------------------------
 //Test de funciones de codificacion.h
@@ -67,7 +112,7 @@ void test_traducir(){
   codigos[69] = "000";
 
   char *trad = traducir(texto,18,codigos,54);
-  assert(strcmp("101101101101111111111010010010010010001001001000000000",trad) == 0);
+  assert(strcmp("101101101101111111111010010010010010001001001000000000",trad)= 0);
 
   free(trad);
   free(codigos);
@@ -95,6 +140,8 @@ void test_longitud_archivo_final(){
   free(pesos);
 }
 
+// test_decodificar();
+
 //----------------------------------------------
 
 int main(){
@@ -102,6 +149,14 @@ int main(){
   //Test de funciones de arboles.h
   test_bstee_crear();
   test_es_hoja();
+
+  //Test de funciones de arpeso.h
+  test_dato_a_arpeso();
+  test_comparar_pesos();
+  test_combinar_AP();
+
+  //test de funciones de listas.h
+  test_lista_crear();
 
   //Test de funciones de codificacion.h
   test_arreglo_con_peso();
