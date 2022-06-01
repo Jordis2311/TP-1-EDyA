@@ -1,25 +1,41 @@
 #ifndef __ARBOLES_H__
 #define __ARBOLES_H__
 
+/**
+ * _BST_Nodo
+ * Definimos la estructura que utilizaremos como arbol
+ * Un Arbol Binario de ints
+ * Cada nodo del arbol tiene 
+ * int letra: representa el ASCII de la letra que guardamos en este nodo
+ * _BST_Nodo *izq, *der: estos seran los 2 hijos del arbol que apuntaran a otros arboles
+ */
 struct _BST_Nodo {
   int letra;
   struct _BST_Nodo *izq, *der;
 };
 
+/**
+ * BSTree:
+ * Un puntero a un _BST_Nodo que utilizaremos para definir nuestros arboles
+ */
 typedef struct _BST_Nodo *BSTree;
 
 /**
+ * bstee_crear() -> BSTree
  * Devuelve un arbol vacío.
  */
 BSTree bstee_crear();
 
 /**
- * 
+ * es_hoja(BSTree) -> Int
+ * Retorna 1 en el caso que el arbol ingresado no tenga hijos
+ * y 0 en caso contrario, tambien comprueba que los nodos tienen 2 hijos o ninguno
  */
 int es_hoja(BSTree arbol);
 
 /**
- * 
+ * recorrer_arbol_huffman(BSTree)
+ * recorre en inorden el arbol dado mostrando los elementos de sus hojas 
  */
 void recorrer_arbol_huffman(BSTree arbol);
 
@@ -37,18 +53,16 @@ void codigos_arbol(BSTree arbol, char buffer[], int altura, char **codigos,
                    int* pos_let);
 
 /**
- * 
+ * texto_a_arbol(char ,int* ,int*) -> BSTree
+ * Recorre el texto dado por el archivo .tree para reconstruir el
+ * arbol de huffman que se utilizo para codificar el archivo original
  */
 BSTree texto_a_arbol(char *arbol_txt,int *pos_arb,int*pos_let);
 
 /**
- * Libera la memoria pedida por un árbol.
+ * liberar_arbol(BSTree arbol)
+ * Recorre y libera la memoria pedida por un árbol.
  */
 void liberar_arbol(BSTree arbol);
-
-/**
- * 
- */
-char* unir_arb_let(char* arbol,char* ord);
 
 #endif

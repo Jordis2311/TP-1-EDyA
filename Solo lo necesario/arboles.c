@@ -4,27 +4,19 @@
 #include <assert.h>
 #include <string.h>
 
-/**
- * Devuelve un arbol vacío.
- */
 BSTree bstee_crear() { return NULL; }
 
-/**
- * 
- */
 int es_hoja(BSTree arbol)
 {
   if (arbol->izq == NULL) {
     assert(arbol->der == NULL);
     return 1;
   } else {
+    assert(arbol->der != NULL);
     return 0;
   }
 }
 
-/**
- * 
- */
 void recorrer_arbol_huffman(BSTree arbol){
   if(arbol != NULL){
     if(es_hoja(arbol)){
@@ -37,33 +29,29 @@ void recorrer_arbol_huffman(BSTree arbol){
   }
 }
 
-
 void codigos_arbol(BSTree arbol, char buffer[], int altura, char **codigos,
                    char* est_arb, int *pos_est, char *orden_letras,
                    int* pos_let){
   if(arbol != NULL){
     if(es_hoja(arbol)){
-      est_arb[*pos_est] = '1';
+      est_arb[*pos_est] = '1'; //En la estructura del arbol de huffman, el 1 representa una hoja
       *pos_est = *pos_est + 1;
-      orden_letras[*pos_let] = (unsigned char) (arbol->letra);
+      orden_letras[*pos_let] = (unsigned char) (arbol->letra); //Guarda las letras del arbol en inorden
       *pos_let = *pos_let + 1;
 
+      //Guardamos el camino recorrido para llegar a esta letra siendo este su codigo en binario
       buffer[altura] = '\0';
       codigos[arbol->letra] = malloc(sizeof(char)*(strlen(buffer) + 1));
       strcpy(codigos[arbol->letra],buffer);
-      //printf("Hoja %i, %s\n",arbol->letra,codigos[arbol->letra]);
-      //puts("");
     }
     else{
-      est_arb[*pos_est] = '0';
+      est_arb[*pos_est] = '0'; //En la estructura del arbol de huffman, el 0 representa una rama
       *pos_est = *pos_est + 1;
       int siguiente = altura + 1;
-      buffer[altura] = '0';
-      //printf("Rama Izquierda\n");
+      buffer[altura] = '0'; //Escribimos en el buffer el camino que recorre para llegar al siguiente nodo
       codigos_arbol(arbol->izq, buffer, siguiente, codigos, est_arb, pos_est,
                     orden_letras, pos_let);
       buffer[altura]= '1';
-      //printf("Rama Derecha\n");
       codigos_arbol(arbol->der, buffer, siguiente, codigos, est_arb, pos_est,
                     orden_letras, pos_let);
     }
@@ -92,9 +80,6 @@ BSTree texto_a_arbol(char *arbol_txt,int *pos_arb,int*pos_let){
   else return NULL;
 }
 
-/**
- * Libera la memoria pedida por un árbol.
- */
 void liberar_arbol(BSTree arbol){
   if(arbol != NULL){
     liberar_arbol(arbol->izq);

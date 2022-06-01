@@ -41,14 +41,14 @@ int main( int argc, char **argv){
 
     orden_letras[pos_letra] = '\0';
 
-    char *tree = unir_arb_let(estructura_arbol,orden_letras);
+    char *tree = unir_arb_let(estructura_arbol,511,orden_letras,256);
 
-    int longitud = longitud_Archivo_final(pesos,codigos);
+    int longitud_bits = longitud_Archivo_final(pesos,codigos,256);
 
-    char *traduccion = traducir(buff,len,codigos,longitud);
+    char *traduccion = traducir(buff,len,codigos,longitud_bits);
 
     int hlen;
-    char *huffman = implode(traduccion,strlen(traduccion),&hlen);
+    char *huffman = implode(traduccion,longitud_bits,&hlen);
 
     char* n_h = strcat(argv[2],".hf");
     writefile(n_h,huffman,hlen);

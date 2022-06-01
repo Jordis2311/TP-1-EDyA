@@ -26,17 +26,16 @@ int * arreglo_con_peso() {
  * donde cada indice de este arreglo es un caracter ASCII.
  */
 
-int *peso_arreglo_caracteres(int *arreglo, char *buff, int len) {
+void peso_arreglo_caracteres(int *arreglo, char *buff, int len) {
   char c;
   for (int i = 0; i < len; i++) {
     c = buff[i];
     arreglo[(unsigned char)c] += 1;
   }
-  return arreglo;
 }
 
-char *traducir(char* texto,int len,char** codigos,int longitud){
-  char* traduccion = malloc(sizeof(char)*(longitud+1));
+char *traducir(char* texto,int len,char** codigos,int long_bits){
+  char* traduccion = malloc(sizeof(char)*(long_bits+1));
   int posicion=0,digitos = 0;
 
   for(int i = 0;i<len;i++){
@@ -52,18 +51,17 @@ char *traducir(char* texto,int len,char** codigos,int longitud){
   return traduccion;
 }
 
-
-char* unir_arb_let(char* arbol,char* ord){
-  char* unido = malloc(sizeof(char)*(767));
+char* unir_arb_let(char* arbol,int alen,char* ord,int llen){
+  char* unido = malloc(sizeof(char)*(alen+llen+1));
   int i,b;
-  for(i = 0;i<511;i++) unido[i] = arbol[i];
-  for(b=0;b<256;b++) unido[i+b] = ord[b];
+  for(i = 0;i<alen;i++) unido[i] = arbol[i];
+  for(b=0;b<llen;b++) unido[i+b] = ord[b];
   return unido;
 }
 
-int longitud_Archivo_final(int* pesos,char **codigos){
+int longitud_Archivo_final(int* pesos,char **codigos,int len){
   int longitud = 0;
-  for(int i = 0;i< 256; i++){
+  for(int i = 0;i< len; i++){
     longitud = longitud + pesos[i]*(strlen(codigos[i]));
   }
   return longitud;
