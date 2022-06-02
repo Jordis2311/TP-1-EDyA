@@ -77,7 +77,8 @@ int longitud_archivo_final(int *pesos, char **codigos, int len){
  */
 char *decodificar(char *bits, int blen, BSTree arbol, int *tlen){
   *tlen = 0;
-  char* original = malloc(sizeof(char) * blen);
+  int sz = 1024;
+  char* original = malloc(sizeof(char) * sz);
   BSTree temp = arbol;
   for (int i = 0; i < blen; i++) {
     if (bits[i] == '0')
@@ -89,6 +90,11 @@ char *decodificar(char *bits, int blen, BSTree arbol, int *tlen){
       original[*tlen] = (char) temp->letra;
       temp = arbol;
       *tlen = *tlen + 1;
+      if(*tlen >= sz){
+        sz = sz*2;
+        original = realloc(original,sz*2);
+      }
+
     }
   }
   return original;
